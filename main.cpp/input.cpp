@@ -18,22 +18,21 @@ void clearInputBuffer(){
     cin.ignore(numeric_limits<streamsize>::max(),'\n');//reset error state ลบทุกอย่างจนกว่าจะเจอ newline
 }
 
-int getValid_Intiger(const string &prompt){
+
+int getValid_Integer(const string &prompt){
     int value;
 
     while(1){
         cout << prompt;
-        cin >> value;
         
         //check ว่าเป็น Number มั้ย
-        if(value < 0){
-            cout << "Error : Please enter a valid number or number more than zero. \n" ;
+        if(cin >> value && value > 0){
             clearInputBuffer(); //ล้างสิ่งที่ผู้ใช้ป้อนค้างไว้ใน Buffer
-            continue;
+            return value;
         }
-
+        cout << "Error : Please enter a valid number or number more than zero. \n" ;
         clearInputBuffer(); //clear for next input
-        return value;
+       
     }
 
 }
@@ -50,9 +49,9 @@ bool getYes_No_Input(const string &prompt){
             text = toupper(text);
         }
         
-        if(input_YN == "Yes" || "y" || "yes"){
+        if(input_YN == "YES" || input_YN == "Y"){
             return true;
-        }else if(input_YN == "No" || "n" || "no"){
+        }else if(input_YN == "NO" || input_YN == "N"){
             return false;
         }else {
             cout << "Error: Please enter 'yes' or 'no'.\n";
@@ -64,7 +63,6 @@ bool getYes_No_Input(const string &prompt){
 
 string getString_Input(const string& prompt){
     string str;
-    string g;
 
     while(1){
         cout << prompt;
@@ -80,33 +78,6 @@ string getString_Input(const string& prompt){
 }
 
 
-
-TravelPreference getUserInput(){
-
-    TravelPreference pref;
-
-    cout<<"=====>>> Smart Trip Assistant <<<=====" << endl;
-    cout<<"Please enter your travel information below.\n"<<endl;
-
-    cout << "Budget [TH-Bath] : ";
-    cin >> pref.budget;
-
-    cout << "Number of travel days : ";
-    cin >> pref.days;
-
-    cout << "Number of people : ";
-    cin >> pref.people;
-
-    cout << "Do you have a private car? [1 = Yes , 0 = No] : ";
-    cin >> pref.hascar;
-
-    cin.ignore(); //clear เพราะเดี๋ยวจะใช้ getline
-
-    cout << "Preferred travel style (Relax / Adventure / Foodie / Photography): ";
-    getline(cin,pref.tripStyle);
-
-}
-
 // version 2
 TravelPreference getUserInput(){
 
@@ -115,21 +86,17 @@ TravelPreference getUserInput(){
     cout<<"=====>>> Smart Trip Assistant <<<=====" << endl;
     cout<<"Please enter your travel information below.\n"<<endl;
 
-    cout << "Budget [TH-Bath] : ";
-    getValid_Intiger("Enter budked");
+    // Assign ค่ากลับ + ใช้ Helper ให้ครบ
+    pref.budget  = getValid_Integer("Budget [TH-Baht] : ");
+    pref.days    = getValid_Integer("Number of travel days : ");
+    pref.people  = getValid_Integer("Number of people : ");
 
-    cout << "Number of travel days : ";
-    getValid_Intiger("Enter travelof days");
+    //// ใช้ getYes_No_Input แทน cin >> int (อ่านง่ายกว่า)
+    // pref.hascar  = getYes_No_Input("Do you have a private car? ");
 
-    cout << "Number of people : ";
-    cin >> pref.people;
+    // ใช้ getString_Input แทน getline เปล่าๆ (มี validation)
+    pref.tripStyle = getString_Input("Preferred travel style (Relax / Adventure / Foodie / Photography) : ");
 
-    cout << "Do you have a private car? [1 = Yes , 0 = No] : ";
-    cin >> pref.hascar;
-
-    cin.ignore(); //clear เพราะเดี๋ยวจะใช้ getline
-
-    cout << "Preferred travel style (Relax / Adventure / Foodie / Photography): ";
-    getline(cin,pref.tripStyle);
+    return pref; 
 
 }
