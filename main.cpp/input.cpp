@@ -18,7 +18,6 @@ void clearInputBuffer(){
     cin.ignore(numeric_limits<streamsize>::max(),'\n');//reset error state ลบทุกอย่างจนกว่าจะเจอ newline
 }
 
-
 int getValid_Integer(const string &prompt){
     int value;
 
