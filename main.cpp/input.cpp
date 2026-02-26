@@ -36,7 +36,6 @@ void select_mode(){
     }else if(select == 3){
         //exit
     }
-    
 }
 
 void clearInputBuffer(){
