@@ -38,7 +38,6 @@ void select_mode(){
     }
 }
 
-
 void clearInputBuffer(){
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(),'\n');//reset error state ลบทุกอย่างจนกว่าจะเจอ newline
