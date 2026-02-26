@@ -15,6 +15,7 @@ void displayBanner(){
 }
 
 void select_mode(){
+    
     int select = 0; // 0 คือ สถานะยังไม่ได้เลือก
     do {
         cout<<"[ 1 ] : Plan trip \n";
