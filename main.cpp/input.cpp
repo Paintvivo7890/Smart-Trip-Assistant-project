@@ -25,6 +25,7 @@ void select_mode(){
         if(!(cin >> select)) clearInputBuffer();
         if(select != 1 && select != 2 && select != 3) Error();
 
+        
     } while (select != 1 && select != 2 && select != 3);
 
     if(select == 1){
