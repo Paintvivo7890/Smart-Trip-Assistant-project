@@ -1,5 +1,6 @@
 #include<iostream>
 #include<limits>
+#include<string>
 #include "input.h"
 
 using namespace std;
@@ -8,9 +9,34 @@ using namespace std;
 void displayBanner(){
 
     cout << endl<<"===================================="<<endl;
-    cout << endl<< "    SMART TRIP PLANNER SYSTEM      "<<endl;
+    cout << endl<< "    SMART PLAN TRIP ASSITANT       "<<endl;
     cout << endl<<"===================================="<<endl;
 
+}
+
+void select_mode(){
+    int select = 0; // 0 คือ สถานะยังไม่ได้เลือก
+    do {
+        cout<<"[ 1 ] : Plan trip \n";
+        cout<<"[ 2 ] : What to Eat Today ? \n";
+        cout<<"[ 3 ] : Exit \n";
+        cout<<"Select :  \n";
+        
+        if(!(cin >> select)) clearInputBuffer();
+        if(select != 1 && select != 2 && select != 3) Error();
+
+    } while (select != 1 && select != 2 && select != 3);
+
+    if(select == 1){
+        //plan trip
+
+    }else if(select == 2){
+        //eat
+
+    }else if(select == 3){
+        //exit
+    }
+    
 }
 
 void clearInputBuffer(){
@@ -23,7 +49,6 @@ int getValid_Integer(const string &prompt){
 
     while(1){
         cout << prompt;
-        
         //check ว่าเป็น Number มั้ย
         if(cin >> value && value > 0){
             clearInputBuffer(); //ล้างสิ่งที่ผู้ใช้ป้อนค้างไว้ใน Buffer
@@ -67,13 +92,10 @@ string getString_Input(const string& prompt){
         cout << prompt;
         getline(cin,str);
 
-        if(!str.empty()){
-            return str;
-        }else{
-            cout << "Error : Input can't be empty"<<endl;
-        }
-    }
+        if(!str.empty()) return str;
+        else cout << "Error : Input can't be empty"<<endl;
 
+    }
 }
 
 
@@ -85,8 +107,34 @@ TravelPreference getUserInput(){
     cout<<"=====>>> Smart Trip Assistant <<<=====" << endl;
     cout<<"Please enter your travel information below.\n"<<endl;
 
+    // 1.Style ในการเที่ยว
+
+
+    //2.long time กี่วัน
+
+
+    //3.งบประมาณ
+
+
+    //4.ไปกี่คน
+
+    //5.มีรถมั้ย
+    // ระยะทาง 
+
+
+    //6.
+
+    //7.
+
+    //8.
+
+    //9.
+
     // Assign ค่ากลับ + ใช้ Helper ให้ครบ
-    pref.budget  = getValid_Integer("Budget [TH-Baht] : ");
+    pref.budget  = getValid_Integer("Budget [TH-Baht] \n(if you would like us to calculate it for you.) please enter 1 : "); 
+    if(pref.budget == 1){ //ถ้ามีงบไม่จำกัดให้ return เงินที่ calculator คำนวณให้แทน
+        pref.budget = 3000;// รอใส่ default ตัวแปรอยู่นะจ๊ะ
+    }
     pref.days    = getValid_Integer("Number of travel days : ");
     pref.people  = getValid_Integer("Number of people : ");
 
@@ -96,6 +144,5 @@ TravelPreference getUserInput(){
     // ใช้ getString_Input แทน getline เปล่าๆ (มี validation)
     pref.tripStyle = getString_Input("Preferred travel style (Relax / Adventure / Foodie / Photography) : ");
 
-    return pref; 
-
+    return pref;
 }
