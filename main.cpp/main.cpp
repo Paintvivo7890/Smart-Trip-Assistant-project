@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 #include <iostream>
 #include "menu.h"
 
@@ -46,4 +47,25 @@ void runProgram() {
         cout << endl;
 
     } while (choice != 0);
+=======
+#include<iostream>
+#include "input.h"
+
+using namespace std;
+
+int main(){
+     displayBanner();
+    
+    TravelPreference pref = getUserInput();
+    
+    // ทดสอบ print ค่าที่รับมา
+    cout << "\n===== Your Travel Info =====" << endl;
+    cout << "Budget     : " << pref.budget    << " Baht" << endl;
+    cout << "Days       : " << pref.days       << " days" << endl;
+    cout << "People     : " << pref.people     << " people" << endl;
+    cout << "Has Car    : " << (pref.hascar ? "Yes" : "No") << endl;
+    cout << "Trip Style : " << pref.tripStyle  << endl;
+    
+    return 0;
+>>>>>>> Stashed changes
 }
