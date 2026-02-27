@@ -1,7 +1,6 @@
 #include "recommendation.h"
 
-// แนะนำสถานที่ ตาม จังหวัดที่เลือก,สไตล์การเที่ยว
-// TS = TripStyle
+// pv คือ เลขที่ผู้ใช้เลือกจังหวัด
 vector<place> Screening_provice(vector<place> &allplace, int pv){
     vector<place> province_accordingto_condition;
     string PV;
@@ -32,6 +31,7 @@ vector<place> Screening_provice(vector<place> &allplace, int pv){
     return province_accordingto_condition;
 }
 
+// ts คือ เลขที่ผู้ใช้เลือก type สถานที่
 vector<place> Recommendation_place(vector<place> &pac, int ts ){
     vector<place> Place_accordingto_condition;
     string TS;
@@ -51,14 +51,14 @@ vector<place> Recommendation_place(vector<place> &pac, int ts ){
 }
 
 
-// โชว์สถานที่ ที่ตรงกับเงื่อนไขจากฟังก์ชัน Recommendation_place 
+// โชว์สถานที่ ที่ตรงกับเงื่อนไข
 void Show_Place(vector<place> &P){
-    cout << "====================";
+    cout << "========================================" << endl;
     for(int i = 0; i < P.size(); i++){
         place p = P[i];
         cout << "Name of place " << "[" << i+1 << "] : " << p.name << endl;
         cout << "District : " << p.district << endl;
         cout << "Entrance Fee : " << p.price << endl;
-        cout << "====================" << endl;
+        cout << "========================================" << endl;
     }
 }
