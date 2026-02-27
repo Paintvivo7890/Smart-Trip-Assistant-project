@@ -2,22 +2,15 @@
 
 // เช็คว่า tripstyleของผู้ใช้ ตรงกับ styleของสถานที่นั้นรึเปล่า 
 //อันนี้กรณีที่tripstyleของสถานที่นั้นเป็นvector คือ สถานที่นั้นมีหลายstyle
-bool Check_tripstyle(Place &P, string ts){
-    for(int i = 0; i < P.tripstyle.size(); i++){
-        if(ts == P.tripstyle[i]){
-            return true;
-            break;
-        }else return false;
-    }
-}
+
 
 // แนะนำสถานที่ ตาม จังหวัดที่เลือก,สไตล์การเที่ยว
 // TS = TripStyle 
-vector<Place> Recommendation_place(vector<Place> &province, string TS){
-    vector<Place> Place_accordingto_condition;
+vector<place> Recommendation_place(vector<place> &allplace, string ){
+    vector<place> Place_accordingto_condition;
     
-    for(int i = 0; i < province.size(); i++){
-        if(Check_tripstyle(province[i],TS)){
+    for(int i = 0; i < allplace.size(); i++){
+        if(TS == allplace.type[i]){
             Place_accordingto_condition.push_back(province[i]);
         }
     }
@@ -26,7 +19,7 @@ vector<Place> Recommendation_place(vector<Place> &province, string TS){
 
 
 // โชว์สถานที่ ที่ตรงกับเงื่อนไขจากฟังก์ชัน Recommendation_place
-void Show_Place(vector<Place> &P){
+void Show_Place(vector<place> &P){
     cout << "===================="
     for(int i = 0; i < P.size(); i++){
         cout << "Name of place " << "[" << i+1 << "] : " << P.name << endl;
