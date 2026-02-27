@@ -4,16 +4,17 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include "trip.h"
 
 using namespace std;
 
-//เช็ค tripstyle
-bool Check_tripstyle(Place &P, string ts);
+
+
+//กรอง จังหวัด
+vector<place> Screening_provice(vector<place> &, int );
 
 //แนะนำสถานที่
-vector<Place> Recommendation_place(vector<Place> &province, string TS);
+vector<place> Recommendation_place(vector<place> &, int );
 
 //โชว์สถานที่
-void Show_Place(vector<Place> &P);
+void Show_Place(vector<place> &);
 #endif
