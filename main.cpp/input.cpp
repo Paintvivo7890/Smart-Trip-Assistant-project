@@ -1,7 +1,9 @@
 #include<iostream>
 #include<limits>
 #include<string>
+#include<sstream>
 #include "input.h"
+
 
 using namespace std;
 
@@ -15,30 +17,91 @@ void displayBanner(){
 }
 
 void select_mode(){
-    
+
     int select = 0; // 0 คือ สถานะยังไม่ได้เลือก
+    string input = "";
     do {
         cout<<"[ 1 ] : Plan trip \n";
         cout<<"[ 2 ] : What to Eat Today ? \n";
         cout<<"[ 3 ] : Exit \n";
-        cout<<"Select :  \n";
+        cout<<"Select :  ";
         
-        if(!(cin >> select)) clearInputBuffer();
+        cin >> input;
+        clearInputBuffer(); //ไม่มีก็ได้ แต่เผื่อเพิ่ม input ที่เป็น int
+
+        if (input == "1") select = 1;
+        else if (input == "2") select = 2;
+        else if (input == "3") select = 3;
+        else {
+            Error();
+            select = 0;
+        }
+
         if(select != 1 && select != 2 && select != 3) Error();
 
         
     } while (select != 1 && select != 2 && select != 3);
 
     if(select == 1){
-        //plan trip
+        //Feature 1 plan trip
+        TravelPreference pref = getUserInput(); 
 
     }else if(select == 2){
         //eat
 
+
     }else if(select == 3){
         //exit
+        
     }
 }
+
+// Enter 1 plan trip
+TravelPreference getUserInput(){
+
+    TravelPreference pref;
+
+    cout<<"=====>>> Smart Trip Assistant <<<=====" << endl;
+    cout<<"Please enter your travel information below.\n"<<endl;
+
+    // 1.Style ในการเที่ยว
+    pref.tripStyle = getValid_Integer("Preferred travel\n style [ 1 ] Culture\n[ 2 ] Adventure\n[ 3 ] Natural\n[ 4 ] Photo\n[ 5 ] Cafe\nEnter 1-5 : ");
+    //1.type_trip[input]
+    //2.type_rest[]
+
+    //2.long time กี่วัน
+
+
+
+    //3.งบประมาณ เลือก 1.บอก 2.ให้โปรแกรมคิดให้
+
+
+    //4.ไปกี่คน
+
+    //5.มีรถมั้ย
+    // ระยะทาง 
+
+
+    // Assign ค่ากลับ + ใช้ Helper ให้ครบ
+    pref.budget  = getValid_Integer("Budget [TH-Baht] \n(if you would like us to calculate it for you.) please enter 1 : "); 
+    if(pref.budget == 1){ //ถ้ามีงบไม่จำกัดให้ return เงินที่ calculator คำนวณให้แทน
+        pref.budget = 3000;// รอใส่ default ตัวแปรอยู่นะจ๊ะ
+    }
+    pref.days    = getValid_Integer("Number of travel days : ");
+    pref.people  = getValid_Integer("Number of people : ");
+
+    //// ใช้ getYes_No_Input แทน cin >> int (อ่านง่ายกว่า)
+    // pref.hascar  = getYes_No_Input("Do you have a private car? ");
+
+    // ใช้ getString_Input แทน getline เปล่าๆ (มี validation)
+    // pref.tripStyle = getString_Input("Preferred travel style (Relax / Adventure / Foodie / Photography) : ");
+
+    return pref;
+}
+
+// Enter 2 Feature food
+
+
 
 void clearInputBuffer(){
     cin.clear();
@@ -57,9 +120,7 @@ int getValid_Integer(const string &prompt){
         }
         cout << "Error : Please enter a valid number or number more than zero. \n" ;
         clearInputBuffer(); //clear for next input
-       
     }
-
 }
 
 // get input type Yes/No แปลงเป็น Boolean
@@ -81,7 +142,6 @@ bool getYes_No_Input(const string &prompt){
         }else {
             cout << "Error: Please enter 'yes' or 'no'.\n";
         }
-
     }
 
 }
@@ -92,6 +152,7 @@ string getString_Input(const string& prompt){
     while(1){
         cout << prompt;
         getline(cin,str);
+        cout<<"---------------------------------"<<endl; //เส้นกั้น
 
         if(!str.empty()) return str;
         else cout << "Error : Input can't be empty"<<endl;
@@ -99,51 +160,21 @@ string getString_Input(const string& prompt){
     }
 }
 
-
-// version 2
-TravelPreference getUserInput(){
-
-    TravelPreference pref;
-
-    cout<<"=====>>> Smart Trip Assistant <<<=====" << endl;
-    cout<<"Please enter your travel information below.\n"<<endl;
-
-    // 1.Style ในการเที่ยว
-
-
-    //2.long time กี่วัน
-
-
-    //3.งบประมาณ
-
-
-    //4.ไปกี่คน
-
-    //5.มีรถมั้ย
-    // ระยะทาง 
-
-
-    //6.
-
-    //7.
-
-    //8.
-
-    //9.
-
-    // Assign ค่ากลับ + ใช้ Helper ให้ครบ
-    pref.budget  = getValid_Integer("Budget [TH-Baht] \n(if you would like us to calculate it for you.) please enter 1 : "); 
-    if(pref.budget == 1){ //ถ้ามีงบไม่จำกัดให้ return เงินที่ calculator คำนวณให้แทน
-        pref.budget = 3000;// รอใส่ default ตัวแปรอยู่นะจ๊ะ
-    }
-    pref.days    = getValid_Integer("Number of travel days : ");
-    pref.people  = getValid_Integer("Number of people : ");
-
-    //// ใช้ getYes_No_Input แทน cin >> int (อ่านง่ายกว่า)
-    // pref.hascar  = getYes_No_Input("Do you have a private car? ");
-
-    // ใช้ getString_Input แทน getline เปล่าๆ (มี validation)
-    pref.tripStyle = getString_Input("Preferred travel style (Relax / Adventure / Foodie / Photography) : ");
-
-    return pref;
+// Error message helper
+void Error(){
+    cout<<"Error: Invalid input. Please try again."<<endl;
 }
+
+// check whether string is a number
+bool Check_number(const string & str){
+    int number;
+    istringstream iss(str);
+    iss >> number;
+    return iss.eof() && !iss.fail();
+}
+
+// Trip style helper (placeholder)
+string Trip(){
+    return "Preferred travel style\n[ 1 ]";
+}
+
