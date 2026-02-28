@@ -44,11 +44,11 @@ void select_mode(){
 
     if(select == 1){
         //Feature 1 plan trip
-        TravelPreference pref = getUserInput(); // [**1**]
+        TravelPreference pref = getUserInput_1(); // [**1**]
 
     }else if(select == 2){
-        //eat
-
+        //Feature 2 restaurant
+        Restaurant rest = getUserInput_2(); // [**2**]
 
     }else if(select == 3){
         //exit
@@ -57,7 +57,7 @@ void select_mode(){
 }
 
 // Enter 1 plan trip [**1**]
-TravelPreference getUserInput(){
+TravelPreference getUserInput_1(){
 
     TravelPreference pref;
     int day = 1;
@@ -76,8 +76,6 @@ TravelPreference getUserInput(){
     pref.num_place = getValid_Integer("How many places would you like to visit per day? :");
     place = pref.num_place;
 
-    // cout << "\nWould you like to add another destination? (y/n) : ";
-    // cin >> again;
 
 
     for(int i = 1 ; i < day+1 ; i++){
@@ -106,9 +104,44 @@ TravelPreference getUserInput(){
 }
 
 // Enter 2 Feature food
+Restaurant getUserInput_2(){
+    Restaurant rest;
+    int ctm , ctgr ,btf , ml;
+
+    cout<<"========== Restaurant ==========";
+    
+    //ถามจำนวนคน
+    rest.customer = getValid_Integer("How many people are dining ? : ");
+    ctm = rest.customer;
+    
+
+    for (int i = 0; i < ctm; i++){
+        cout<<"People[ "<<i+1<<" ]"<<endl;
+        Person p;
+        
+        p.meals = getValid_Integer("How many meals would you like ?\nEnter number: ");
+        ml = p.meals;
+
+        for(int j = 0 ; j < ml ; j ++){
+            Meal m;
+
+            cout<<"Meals[ "<<j+1<<" ]"<<endl;
+            //เลือกเส้น หรือ ข้าว
+            m.category = getValid_Integer("Select your preferred dish type:\n1. Noodles\n2. Rice\n3. Surprise me\nEnter your choice (1-3): ");
+            ctgr = m.category;
+
+            if(ctgr == 3){
+                //random
+                break;
+            }
+        }
+    }
+
+}
 
 
 
+//เคลียร์
 void clearInputBuffer(){
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(),'\n');//reset error state ลบทุกอย่างจนกว่าจะเจอ newline
@@ -129,7 +162,7 @@ int getValid_Integer(const string &prompt){
     }
 }
 
-// get input type Yes/No แปลงเป็น Boolean
+// input type Yes/No แปลงเป็น Boolean
 bool getYes_No_Input(const string &prompt){
     string input_YN;
 
@@ -152,13 +185,14 @@ bool getYes_No_Input(const string &prompt){
 
 }
 
+//input type string
 string getString_Input(const string& prompt){
     string str;
 
     while(1){
         cout << prompt;
         getline(cin,str);
-        cout<<"---------------------------------"<<endl; //เส้นกั้น
+        line(); //เส้นกั้น
 
         if(!str.empty()) return str;
         else cout << "Error : Input can't be empty"<<endl;
@@ -183,8 +217,23 @@ bool Check_number(const string & str){
     return iss.eof() && !iss.fail();
 }
 
-// Trip style helper (placeholder)
-string Trip(){
-    return "Preferred travel style\n[ 1 ]";
+//โขว์ข้อมูลจังงหวัด
+void show_pv(){
+    cout << "[ 1 ] Chiang Mai" << endl;
+    cout << "[ 2 ] Chiang Rai" << endl;
+    cout << "[ 3 ] Mae Hong Son" << endl;
+    cout << "[ 4 ] Lamphun" << endl;
+    cout << "[ 5 ] Lampang" << endl;
+    cout << "[ 6 ] Phayao" << endl;
+    cout << "[ 7 ] Phrae" << endl;
+    cout << "[ 8 ] Nan" << endl;
+    cout << "[ 9 ] Uttaradit" << endl;
+    cout << "[ 10 ] Tak" << endl;
+    cout << "[ 11 ] Sukhothai" << endl;
+    cout << "[ 12 ] Phitsanulok" << endl;
+    cout << "[ 13 ] Kamphaeng Phet" << endl;
+    cout << "[ 14 ] Phetchabun" << endl;
+    cout << "[ 15 ] Phichit" << endl;
+    cout << "[ 16 ] Nakhon Sawan" << endl;
+    cout << "[ 17 ] Uthai Thani" << endl;
 }
-
