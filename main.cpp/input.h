@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <sstream>
-#include<string>
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -20,17 +21,28 @@ struct TravelPreference{
 
 };
 
-struct Restaurant{
-    string name; //ชื่อร้าน
-    string category; //เส้น หรือ ข้าว
-    string location;
-    
 
+
+struct Meal {
+    int category;// 1=Noodles, 2=Rice, 3=Surprise me
+    string result;// ชื่ออาหารที่สุ่มได้
+};
+
+struct Person {
+    int meals;// กี่มื้อ
+    vector<Meal> mealList;// เก็บทุกมื้อของคนนี้
+};
+
+struct Restaurant {
+    int customer;// กี่คน
+    int budget_food;// งบต่อคน
+    vector<Person> peopleList;// เก็บทุกคน
 };
 
 
-TravelPreference getUserInput(); //Feature [1]
 
+TravelPreference getUserInput_1(); //Feature [1]
+Restaurant getUserInput_2(); //Feature [2]
 
 //help for validation
 int getValid_Integer(const string &prompt);
