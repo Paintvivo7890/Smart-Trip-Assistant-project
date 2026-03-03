@@ -1,10 +1,12 @@
 #include "recommendation.h"
-#include "dataENG.h"
-#include<vector>
+
+
 
 // pv คือ เลขที่ผู้ใช้เลือกจังหวัด
-vector<place> Screening_provice(vector<place> &allplace, int pv){
-    vector<place> province_accordingto_condition;
+vector<Place> Screening_province(vector<Place> &ap, vector<int> Pro){
+    vector<Place> province_accordingto_condition;
+    
+    int pv = Pro[Pro.size() - 1];
     string PV;
     if(pv == 1) PV = "Chiang Mai";
     if(pv == 2) PV = "Chiang Rai";
@@ -24,18 +26,19 @@ vector<place> Screening_provice(vector<place> &allplace, int pv){
     if(pv == 16) PV = "Nakhon Sawan";
     if(pv == 17) PV = "Uthai Thani";
 
-    for(int i = 0; i < allplace.size(); i++){
-        place p = allplace[i];
+    for(int i = 0; i < ap.size(); i++){
+        Place p = ap[i];
         if(PV == p.province){
-            province_accordingto_condition.push_back(allplace[i]);
+            province_accordingto_condition.push_back(ap[i]);
         }
     }
     return province_accordingto_condition;
 }
 
 // ts คือ เลขที่ผู้ใช้เลือก type สถานที่
-vector<place> Recommendation_place(vector<place> &pac, int ts ){
-    vector<place> Place_accordingto_condition;
+vector<Place> Recommendation_place(vector<Place> &pac, vector<int> T ){
+    vector<Place> Place_accordingto_condition;
+    int ts = T[T.size() - 1 ];
     string TS;
     if(ts == 1) TS = "Culture";
     if(ts == 2) TS = "Adventure";
@@ -44,7 +47,7 @@ vector<place> Recommendation_place(vector<place> &pac, int ts ){
     if(ts == 5) TS = "Cafe";
 
     for(int i = 0; i < pac.size(); i++){
-        place p = pac[i];
+        Place p = pac[i];
         if(TS == p.type){
             Place_accordingto_condition.push_back(pac[i]);
         }
@@ -54,10 +57,10 @@ vector<place> Recommendation_place(vector<place> &pac, int ts ){
 
 
 // โชว์สถานที่ ที่ตรงกับเงื่อนไข
-void Show_Place(vector<place> &P){
+void Show_Place(vector<Place> &P){
     cout << "========================================" << endl;
     for(int i = 0; i < P.size(); i++){
-        place p = P[i];
+        Place p = P[i];
         cout << "Name of place " << "[" << i+1 << "] : " << p.name << endl;
         cout << "District : " << p.district << endl;
         cout << "Entrance Fee : " << p.price << endl;
@@ -66,7 +69,7 @@ void Show_Place(vector<place> &P){
 }
 
 //รับเวคเตอร์จากtrip
-vector<string> getDistrictList(vector<place> tripPlaces) {
+vector<string> getDistrictList(vector<Place> tripPlaces) {
     vector<string> result;
     for (int i = 0; i < tripPlaces.size(); i++) {
         string currentDistrict = tripPlaces[i].district;
@@ -155,4 +158,5 @@ void Show_restaurantsellect(vector<restaurant> &P) {
         cout << "--------------------------------------------" << endl;
     }
 }
+
 
