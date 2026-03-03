@@ -18,7 +18,7 @@ struct TravelPreference{
     int people; // จน.คนที่ไป
     // int tripStyle; //ชอบเที่ยวแบบไหนหงะ
 
-    vector<int> province;    // เก็บหลายจังหวัด
+    vector<int> Province;    // เก็บหลายจังหวัด
     vector<int> tripStyle;   // เก็บหลาย style
 };
 
