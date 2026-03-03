@@ -21,5 +21,5 @@ struct restaurant {
     string name;
     int price;
 };
-vector<restaurant>allrestaurant;
+extern vector<restaurant> allrestaurant;
 #endif
