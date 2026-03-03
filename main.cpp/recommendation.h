@@ -4,22 +4,23 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include "dataENG.h"
 
 using namespace std;
 
 
 
 //กรอง จังหวัด
-vector<place> Screening_provice(vector<place> &, int );
+vector<Place> Screening_province(vector<Place> &,vector<int>);
 
 //แนะนำสถานที่
-vector<place> Recommendation_place(vector<place> &, int );
+vector<Place> Recommendation_place(vector<Place> &,vector<int> );
 
 //โชว์สถานที่
-void Show_Place(vector<place> &);
+void Show_Place(vector<Place> &);
 
 //แยกอำเภอ
-vector<string> getDistrictList(vector<place> );
+vector<string> getDistrictList(vector<Place> );
 
 //หาร้านอาหารตามอำเภอ
 vector<restaurant> filterRestaurantsByDistricts(vector<string> , vector<restaurant> );
@@ -35,4 +36,5 @@ vector<restaurant> selectresrestaurant(vector<restaurant> &);
 
 //โชว่าร้านนี้เลือกไปกี่ครั้ง
 void Show_restaurantsellect(vector<restaurant> &);
+
 #endif
