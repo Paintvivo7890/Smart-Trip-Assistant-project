@@ -57,7 +57,6 @@ TravelPreference getUserInput_1(){
     TravelPreference pref;
     int day = 1;
     int place,type_trip,people,budget;
-    int ts,pv; //input tripStyle , provice
     char again = 'n';
 
     line();
@@ -97,7 +96,9 @@ TravelPreference getUserInput_1(){
             // pref.tripStyle = getValid_Integer("Enter 1-6 : ");
             // ts =  pref.tripStyle;
             pref.tripStyle.push_back(getValid_Integer("Enter 1-5 : "));
-            show_place(); //show all data place
+            vector<Place> p1 = Screening_province(allplace, pref.Province);
+            vector<Place> p2 = Recommendation_place(p1,pref.tripStyle);
+            Show_Place(p2);
         }
        
     }
