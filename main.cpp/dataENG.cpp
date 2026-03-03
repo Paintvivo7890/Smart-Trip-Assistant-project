@@ -426,13 +426,7 @@ vector<Place> allplace = {
 {"Uthai Thani", "Ban Rai", "Photo", "Sao Hai Market", 0},
 {"Uthai Thani", "Mueang Uthai Thani", "Photo", "Ko Thepho Suspension Bridge", 0}
 };
-struct restaurant {
-    
-    string district;
-    string type;
-    string name;
-    int price;
-};
+
 vector<restaurant>allrestaurant = {
 
    {"Mueang Chiang Mai", "Noodle", "ข้าวซอยแม่สาย", 50},
