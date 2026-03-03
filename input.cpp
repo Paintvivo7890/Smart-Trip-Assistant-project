@@ -6,7 +6,6 @@ using namespace std;
 
 
 void displayBanner(){
-
     cout << endl<<"===================================="<<endl;
     cout << endl<< "    SMART PLAN TRIP ASSITANT       "<<endl;
     cout << endl<<"===================================="<<endl;

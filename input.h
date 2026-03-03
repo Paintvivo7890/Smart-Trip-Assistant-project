@@ -20,7 +20,6 @@ struct TravelPreference{
 
     vector<int> province;    // เก็บหลายจังหวัด
     vector<int> tripStyle;   // เก็บหลาย style
-
 };
 
 
