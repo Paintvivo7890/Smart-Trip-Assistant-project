@@ -1,3 +1,6 @@
+#ifndef DATAENG_H
+#define DATAENG_H
+
 #include<iostream>
 #include<vector>
 using namespace std;
@@ -19,3 +22,4 @@ struct restaurant {
     int price;
 };
 vector<restaurant>allrestaurant;
+#endif
