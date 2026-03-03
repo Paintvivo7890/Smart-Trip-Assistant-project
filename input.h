@@ -41,6 +41,7 @@ struct Restaurant {
 };
 
 
+
 TravelPreference getUserInput_1(); //Feature [1]
 Restaurant getUserInput_2(); //Feature [2]
 
