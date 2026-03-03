@@ -2,7 +2,7 @@
 
 
 
-// pv คือ เลขที่ผู้ใช้เลือกจังหวัด
+// pv คือ เลขที่ผู้ใช้เลือกจังหวัดดดด
 vector<Place> Screening_province(vector<Place> &ap, vector<int> Pro){
     vector<Place> province_accordingto_condition;
     
