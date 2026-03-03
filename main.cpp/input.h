@@ -5,20 +5,21 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include<limits>
+#include<iomanip>
 
 using namespace std;
 
 struct TravelPreference{
-    int province; //จังหวัด
+    // int province; //จังหวัด
     int num_place; //จำนวนที่เที่ยว
     int budget = 0; //งบ
     int days; // จน.วันที่ไป
     int people; // จน.คนที่ไป
+    // int tripStyle; //ชอบเที่ยวแบบไหนหงะ
 
-    bool hascar; // มีรถบ่
-    int tripStyle; //ชอบเที่ยวแบบไหนหงะ
-
-
+    vector<int> province;    // เก็บหลายจังหวัด
+    vector<int> tripStyle;   // เก็บหลาย style
 };
 
 
@@ -38,7 +39,6 @@ struct Restaurant {
     int budget_food;// งบต่อคน
     vector<Person> peopleList;// เก็บทุกคน
 };
-
 
 
 TravelPreference getUserInput_1(); //Feature [1]
@@ -68,5 +68,7 @@ void line(); //เส้นกั้น
 
 void show_pv();
 void show_place();
+
+void show_style();
 
 #endif
