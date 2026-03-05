@@ -427,7 +427,7 @@ vector<Place> allplace = {
 {"Uthai Thani", "Mueang Uthai Thani", "Photo", "Ko Thepho Suspension Bridge", 0}
 };
 
-vector<restaurant>allrestaurant = {
+vector<Restaurant>allRestaurant = {
 
    {"Mueang Chiang Mai", "Noodle", "ข้าวซอยแม่สาย", 50},
 {"Mueang Chiang Mai", "Noodle", "ก๋วยเตี๋ยวอัญชัน", 60},
