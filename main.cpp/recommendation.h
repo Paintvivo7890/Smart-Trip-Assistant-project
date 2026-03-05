@@ -4,6 +4,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<iomanip>
 #include "dataENG.h"
 
 using namespace std;
@@ -23,18 +24,18 @@ void Show_Place(vector<Place> &);
 vector<string> getDistrictList(vector<Place> );
 
 //หาร้านอาหารตามอำเภอ
-vector<restaurant> filterRestaurantsByDistricts(vector<string> , vector<restaurant> );
+vector<Restaurant> filterRestaurantsByDistricts(vector<string> , vector<Restaurant> );
 
 //เลือกประเภทร้าน
-vector<restaurant> Recommendation_place(vector<restaurant> &, int );
+vector<Restaurant> Recommendation_place(vector<Restaurant> &, int );
 
 //โชร้านทั้งหมด
-void Show_restaurant(vector<restaurant> &);
+void Show_Restaurant(vector<Restaurant> &);
 
 //เลือกร้านจากที่โช
-vector<restaurant> selectresrestaurant(vector<restaurant> &);
+vector<Restaurant> selectresRestaurant(vector<Restaurant> &);
 
 //โชว่าร้านนี้เลือกไปกี่ครั้ง
-void Show_restaurantsellect(vector<restaurant> &);
+void Show_Restaurantsellect(vector<Restaurant> &);
 
 #endif

@@ -1,6 +1,10 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include "recommendation.h"
+#include "calculation.h"
+#include "dataENG.h"
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -18,28 +22,11 @@ struct TravelPreference{
     int people; // จน.คนที่ไป
     // int tripStyle; //ชอบเที่ยวแบบไหนหงะ
 
+    int placePerDay;
+    
     vector<int> Province;    // เก็บหลายจังหวัด
     vector<int> tripStyle;   // เก็บหลาย style
 };
-
-
-
-struct Meal {
-    int category;// 1=Noodles, 2=Rice, 3=Surprise me
-    string result;// ชื่ออาหารที่สุ่มได้
-};
-
-struct Person {
-    int meals;// กี่มื้อ
-    vector<Meal> mealList;// เก็บทุกมื้อของคนนี้
-};
-
-struct Restaurant {
-    int customer;// กี่คน
-    int budget_food;// งบต่อคน
-    vector<Person> peopleList;// เก็บทุกคน
-};
-
 
 TravelPreference getUserInput_1(); //Feature [1]
 Restaurant getUserInput_2(); //Feature [2]
@@ -67,12 +54,9 @@ void select_mode();
 void line(); //เส้นกั้น
 
 void show_pv();
-void show_place();
+void show_Place();
 
 void show_style();
 
+void showTripSummary(vector<Place> places, vector<Restaurant> foods, TravelPreference pref);
 #endif
-// ================================================================
-//  input.h  –  Smart Plan Trip Assistant
-// ================================================================
-
