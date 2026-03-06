@@ -38,4 +38,7 @@ vector<Restaurant> selectresRestaurant(vector<Restaurant> &);
 //โชว่าร้านนี้เลือกไปกี่ครั้ง
 void Show_Restaurantsellect(vector<Restaurant> &);
 
+//สรุปร้านอาหาร
+void Show_Restaurant_Summary(vector<Restaurant> &);
+
 #endif

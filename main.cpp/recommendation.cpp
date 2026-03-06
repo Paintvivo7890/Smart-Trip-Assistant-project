@@ -179,10 +179,21 @@ vector<Restaurant> filterRestaurantsByDistricts(vector<string> districtList, vec
 
 // รับ filteredResult เพื่อนำมาแยกประเภท
 vector<Restaurant> Recommendation_place(vector<Restaurant> &pac, int ts){
+    vector<Restaurant> foods;
+
     vector<Restaurant> Restaurant_accordingto_condition;
     string TS = "";
     if(ts == 1) TS = "Noodle";
     else if(ts == 2) TS = "Rice";
+
+    //Random
+    if(ts == 3){
+        vector<Restaurant> result;
+        srand(time(0));
+        int r = rand() % pac.size();
+        result.push_back(pac[r]);
+        return result;
+    }
 
     for(int i = 0; i < (int)pac.size(); i++){
         if(pac[i].type == TS)
@@ -352,4 +363,88 @@ void Show_Restaurantsellect(vector<Restaurant> &P){
         if(i < (int)P.size() - 1) mid();
     }
     bot();
+}
+
+
+// สรุปร้านอาหาร
+void Show_Restaurant_Summary(vector<Restaurant> &R){
+    if(R.empty()){
+        cout << BOLD BRIGHT_RED "No restaurants selected.\n" RESET;
+        return;
+    }
+
+    const int W_NO   = 4;
+    const int W_NAME = 30;
+    const int W_TYPE = 20;
+    const int W_PRICE= 12;
+
+    auto repeat = [](string s,int n){
+        string r;
+        for(int i=0;i<n;i++) r+=s;
+        return r;
+    };
+
+    string H="-", VT="|", TL="+", TR="+", BL="+", BR="+";
+    string ML="+", MR="+", TM="+", BM="+", CR="+";
+
+    auto top=[&](){
+        cout<<BRIGHT_CYAN
+        <<TL<<repeat(H,W_NO+2)
+        <<TM<<repeat(H,W_NAME+2)
+        <<TM<<repeat(H,W_TYPE+2)
+        <<TM<<repeat(H,W_PRICE+2)
+        <<TR<<RESET<<endl;
+    };
+
+    auto mid=[&](){
+        cout<<BRIGHT_CYAN
+        <<ML<<repeat(H,W_NO+2)
+        <<CR<<repeat(H,W_NAME+2)
+        <<CR<<repeat(H,W_TYPE+2)
+        <<CR<<repeat(H,W_PRICE+2)
+        <<MR<<RESET<<endl;
+    };
+
+    auto bot=[&](){
+        cout<<BRIGHT_CYAN
+        <<BL<<repeat(H,W_NO+2)
+        <<BM<<repeat(H,W_NAME+2)
+        <<BM<<repeat(H,W_TYPE+2)
+        <<BM<<repeat(H,W_PRICE+2)
+        <<BR<<RESET<<endl;
+    };
+
+    auto row=[&](string no,string name,string type,string price){
+        cout<<BRIGHT_CYAN<<VT<<RESET
+        <<" "<<left<<setw(W_NO)<<no
+        <<" "<<BRIGHT_CYAN<<VT<<RESET
+        <<" "<<left<<setw(W_NAME)<<name
+        <<" "<<BRIGHT_CYAN<<VT<<RESET
+        <<" "<<left<<setw(W_TYPE)<<type
+        <<" "<<BRIGHT_CYAN<<VT<<RESET
+        <<" "<<right<<setw(W_PRICE)<<price
+        <<" "<<BRIGHT_CYAN<<VT<<RESET
+        <<endl;
+    };
+
+    top();
+    row("No","Restaurant","Type","Price");
+    mid();
+
+    for(int i=0;i<R.size();i++){
+
+        row(
+            to_string(i+1),
+            R[i].name,
+            R[i].type,
+            to_string(R[i].price)
+        );
+
+        if(i<R.size()-1) mid();
+    }
+
+    bot();
+
+    cout<<BRIGHT_CYAN<<"Total : "<<RESET
+        <<BOLD BRIGHT_YELLOW<<R.size()<<" restaurant(s)\n"<<RESET;
 }

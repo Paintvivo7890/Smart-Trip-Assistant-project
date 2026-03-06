@@ -1,0 +1,449 @@
+// main_GUI.cpp — Smart Trip Assistant (Win32 GUI)
+// Compile: g++ main_GUI.cpp input.cpp recommendation.cpp dataENG.cpp -o test.exe -mwindows
+//
+// ✅ แก้ไขแล้ว:
+//   - ใช้ struct Place (ตัวพิมพ์ใหญ่) จาก dataENG.h
+//   - ใช้ Screening_province() และ Recommendation_place() signature ใหม่ (รับ vector<int>)
+//   - include เฉพาะ recommendation.h (ซึ่ง include dataENG.h อยู่แล้ว) → ไม่ชน data.h
+
+#include <windows.h>
+#include <commctrl.h>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <cstdlib>
+#include <ctime>
+
+// ✅ include แค่นี้ — recommendation.h include dataENG.h อยู่แล้ว
+//    ห้าม include data.h อีก ไม่งั้น struct ชนกัน
+#include "recommendation.h"
+
+#pragma comment(lib, "comctl32.lib")
+
+// ─────────────────────────────────────────
+//  IDs ของ Controls
+// ─────────────────────────────────────────
+#define ID_BTN_PLAN_TRIP    101
+#define ID_BTN_WHAT_TO_EAT  102
+#define ID_BTN_EXIT         103
+
+// Plan Trip Dialog
+#define ID_EDIT_PEOPLE      201
+#define ID_EDIT_BUDGET      202
+#define ID_EDIT_DAYS        203
+#define ID_COMBO_PROVINCE   205
+#define ID_COMBO_STYLE      206
+#define ID_BTN_SEARCH       207
+#define ID_LIST_RESULT      208
+#define ID_BTN_CLOSE_PLAN   209
+
+// What to Eat Dialog
+#define ID_EDIT_CUSTOMER    301
+#define ID_COMBO_CATEGORY   302
+#define ID_BTN_EAT_GO       303
+#define ID_LIST_EAT_RESULT  304
+#define ID_BTN_CLOSE_EAT    305
+
+// ─────────────────────────────────────────
+//  Globals
+// ─────────────────────────────────────────
+HINSTANCE g_hInst = NULL;
+HWND      g_hMain = NULL;
+
+// ─────────────────────────────────────────
+//  Helper functions
+// ─────────────────────────────────────────
+static std::string GetDlgItemStr(HWND hDlg, int id) {
+    char buf[256] = {};
+    GetDlgItemTextA(hDlg, id, buf, 256);
+    return std::string(buf);
+}
+static int GetDlgItemInt2(HWND hDlg, int id) {
+    try { return std::stoi(GetDlgItemStr(hDlg, id)); }
+    catch (...) { return 0; }
+}
+static void LB_Add(HWND hList, const std::string& s) {
+    SendMessageA(hList, LB_ADDSTRING, 0, (LPARAM)s.c_str());
+}
+static void CB_Add(HWND hCombo, const std::string& s) {
+    SendMessageA(hCombo, CB_ADDSTRING, 0, (LPARAM)s.c_str());
+}
+
+// ─────────────────────────────────────────
+//  ข้อมูล dropdown
+// ─────────────────────────────────────────
+static const char* PROVINCES[] = {
+    "Chiang Mai","Chiang Rai","Mae Hong Son","Lamphun","Lampang",
+    "Phayao","Phrae","Nan","Uttaradit","Tak",
+    "Sukhothai","Phitsanulok","Kamphaeng Phet","Phetchabun","Phichit",
+    "Nakhon Sawan","Uthai Thani"
+};
+static const char* STYLES[] = {
+    "Culture","Adventure","Natural","Photo","Cafe","Random"
+};
+
+// ─────────────────────────────────────────
+//  SearchPlaces — เชื่อม recommendation.cpp
+//  ✅ ส่ง vector<int> ให้ตรง signature ใหม่
+// ─────────────────────────────────────────
+static std::vector<Place> SearchPlaces(int pvSel, int stSel) {
+    // pvSel : 0-based index จาก ComboBox → แปลงเป็น 1-17
+    // stSel : 0-based index (0=Culture ... 5=Random)
+
+    vector<int> pvVec = { pvSel + 1 };          // ✅ vector<int> ตาม signature
+    vector<int> stVec = { stSel + 1 };          // ✅ vector<int> ตาม signature
+
+    vector<Place> filtered = Screening_province(allplace, pvVec);
+
+    if (stSel == 5) {
+        // Random → คืนทุกที่ในจังหวัดนั้น
+        return filtered;
+    }
+
+    vector<Place> result = Recommendation_place(filtered, stVec);
+    return result;
+}
+
+// ─────────────────────────────────────────
+//  Dialog: Plan Trip
+// ─────────────────────────────────────────
+INT_PTR CALLBACK PlanTripDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
+    switch (msg) {
+    case WM_INITDIALOG: {
+        HWND hPv = GetDlgItem(hDlg, ID_COMBO_PROVINCE);
+        for (auto& p : PROVINCES) CB_Add(hPv, p);
+        SendMessage(hPv, CB_SETCURSEL, 0, 0);
+
+        HWND hSt = GetDlgItem(hDlg, ID_COMBO_STYLE);
+        for (auto& s : STYLES) CB_Add(hSt, s);
+        SendMessage(hSt, CB_SETCURSEL, 0, 0);
+
+        return TRUE;
+    }
+    case WM_COMMAND: {
+        int wID = LOWORD(wParam);
+
+        if (wID == ID_BTN_SEARCH) {
+            int people = GetDlgItemInt2(hDlg, ID_EDIT_PEOPLE);
+            int budget = GetDlgItemInt2(hDlg, ID_EDIT_BUDGET);
+            int days   = GetDlgItemInt2(hDlg, ID_EDIT_DAYS);
+
+            int pvSel = (int)SendMessage(GetDlgItem(hDlg, ID_COMBO_PROVINCE), CB_GETCURSEL, 0, 0);
+            int stSel = (int)SendMessage(GetDlgItem(hDlg, ID_COMBO_STYLE),    CB_GETCURSEL, 0, 0);
+            HWND hList = GetDlgItem(hDlg, ID_LIST_RESULT);
+
+            if (people <= 0 || days <= 0) {
+                MessageBoxA(hDlg, "Please fill in valid People and Days (> 0).",
+                    "Input Error", MB_OK | MB_ICONWARNING);
+                return TRUE;
+            }
+
+            // ค้นหาสถานที่
+            std::vector<Place> results = SearchPlaces(pvSel, stSel);
+
+            SendMessage(hList, LB_RESETCONTENT, 0, 0);
+
+            if (results.empty()) {
+                LB_Add(hList, "No places found for this selection.");
+            } else {
+                // Header
+                std::string header = "=== " + std::string(PROVINCES[pvSel])
+                                   + " | " + STYLES[stSel]
+                                   + " | " + std::to_string(people) + " person(s)"
+                                   + " | " + std::to_string(days) + " day(s) ===";
+                LB_Add(hList, header);
+                LB_Add(hList, "");
+
+                int no = 1, totalCost = 0;
+                for (auto& p : results) {
+                    LB_Add(hList, std::to_string(no++) + ".  " + p.name
+                                  + "  [" + p.district + "]");
+                    LB_Add(hList, "    Entrance : "
+                                  + (p.price == 0 ? std::string("Free")
+                                                  : std::to_string(p.price) + " THB/person"));
+                    totalCost += p.price * people;
+                }
+
+                LB_Add(hList, "");
+                LB_Add(hList, "-------------------------------");
+                LB_Add(hList, "Total entrance cost : " + std::to_string(totalCost) + " THB");
+                if (budget > 0) {
+                    LB_Add(hList, "Remaining budget    : "
+                                  + std::to_string(budget - totalCost) + " THB");
+                }
+            }
+            return TRUE;
+        }
+
+        if (wID == ID_BTN_CLOSE_PLAN || wID == IDCANCEL) {
+            EndDialog(hDlg, 0);
+            return TRUE;
+        }
+        break;
+    }
+    case WM_CLOSE:
+        EndDialog(hDlg, 0);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// ─────────────────────────────────────────
+//  Dialog: What to Eat
+// ─────────────────────────────────────────
+INT_PTR CALLBACK WhatToEatDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam) {
+    static const char* NOODLES[] = {
+        "Pad Thai","Boat Noodles","Tom Yum Noodles","Khao Soi","Bamee Moo Daeng"
+    };
+    static const char* RICE[] = {
+        "Khao Pad","Khao Man Gai","Khao Moo Daeng","Khao Na Ped","Khao Kha Moo"
+    };
+    static const char* RANDOM[] = {
+        "Som Tum","Larb","Massaman Curry","Green Curry","Mango Sticky Rice",
+        "Pad Thai","Khao Man Gai","Tom Kha Gai","Pad Kra Pao","Satay"
+    };
+
+    switch (msg) {
+    case WM_INITDIALOG: {
+        HWND hCat = GetDlgItem(hDlg, ID_COMBO_CATEGORY);
+        CB_Add(hCat, "Noodles");
+        CB_Add(hCat, "Rice");
+        CB_Add(hCat, "Surprise me!");
+        SendMessage(hCat, CB_SETCURSEL, 0, 0);
+        return TRUE;
+    }
+    case WM_COMMAND: {
+        int wID = LOWORD(wParam);
+
+        if (wID == ID_BTN_EAT_GO) {
+            int customer = GetDlgItemInt2(hDlg, ID_EDIT_CUSTOMER);
+            int catSel   = (int)SendMessage(GetDlgItem(hDlg, ID_COMBO_CATEGORY), CB_GETCURSEL, 0, 0);
+            HWND hList   = GetDlgItem(hDlg, ID_LIST_EAT_RESULT);
+
+            if (customer <= 0) {
+                MessageBoxA(hDlg, "Please enter number of people (> 0).",
+                    "Input Error", MB_OK | MB_ICONWARNING);
+                return TRUE;
+            }
+
+            SendMessage(hList, LB_RESETCONTENT, 0, 0);
+            LB_Add(hList, "=== Meal Recommendation for "
+                          + std::to_string(customer) + " person(s) ===");
+            LB_Add(hList, "");
+
+            srand((unsigned)GetTickCount());
+            for (int i = 1; i <= customer; i++) {
+                LB_Add(hList, "Person [" + std::to_string(i) + "] :");
+                std::string meal;
+                if      (catSel == 0) meal = NOODLES[rand() % 5];
+                else if (catSel == 1) meal = RICE   [rand() % 5];
+                else                 meal = RANDOM  [rand() % 10];
+                LB_Add(hList, "   --> " + meal);
+                LB_Add(hList, "");
+            }
+            return TRUE;
+        }
+
+        if (wID == ID_BTN_CLOSE_EAT || wID == IDCANCEL) {
+            EndDialog(hDlg, 0);
+            return TRUE;
+        }
+        break;
+    }
+    case WM_CLOSE:
+        EndDialog(hDlg, 0);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// ─────────────────────────────────────────
+//  DlgBuilder — สร้าง Dialog in-code (ไม่ต้องใช้ .rc)
+// ─────────────────────────────────────────
+#define DLGBUF_SIZE 4096
+struct DlgBuilder {
+    BYTE buf[DLGBUF_SIZE];
+    int  pos = 0;
+
+    void align4() { pos = (pos + 3) & ~3; }
+    void addW (WORD  v) { *(WORD* )(buf+pos)=v; pos+=2; }
+    void addDW(DWORD v) { *(DWORD*)(buf+pos)=v; pos+=4; }
+    void addWStr(const wchar_t* s) { while(*s) addW((WORD)*s++); addW(0); }
+
+    void addCtrl(DWORD style, short x, short y, short w, short h,
+                 WORD id, const wchar_t* cls, const wchar_t* txt) {
+        align4();
+        addDW(style | WS_CHILD | WS_VISIBLE);
+        addDW(0);
+        addW((WORD)x); addW((WORD)y); addW((WORD)w); addW((WORD)h);
+        addW(id);
+        addWStr(cls);
+        addWStr(txt);
+        addW(0);
+    }
+};
+
+// ─── Plan Trip Dialog ───
+static void ShowPlanTripDialog(HWND hParent) {
+    DlgBuilder b;
+    DLGTEMPLATE* dt = (DLGTEMPLATE*)b.buf;
+    dt->style = DS_SETFONT|DS_MODALFRAME|DS_CENTER|WS_POPUP|WS_CAPTION|WS_SYSMENU|WS_THICKFRAME;
+    dt->dwExtendedStyle = 0;
+    dt->cdit = 0;
+    dt->x=0; dt->y=0; dt->cx=400; dt->cy=360;
+    b.pos = sizeof(DLGTEMPLATE);
+    b.addW(0); b.addW(0);
+    b.addWStr(L"Plan Trip");
+    b.addW(9); b.addWStr(L"Segoe UI");
+
+    short n = 0;
+    auto add = [&](DWORD st,short x,short y,short w,short h,
+                   WORD id,const wchar_t* cls,const wchar_t* txt){
+        b.addCtrl(st,x,y,w,h,id,cls,txt); n++;
+    };
+
+    add(SS_LEFT,              8,  8,120,10, 0,                 L"STATIC",  L"Number of Travelers:");
+    add(WS_BORDER|ES_NUMBER,130,  6, 60,14, ID_EDIT_PEOPLE,    L"EDIT",    L"1");
+
+    add(SS_LEFT,              8, 26,150,10, 0,                 L"STATIC",  L"Budget (THB, 0=skip):");
+    add(WS_BORDER|ES_NUMBER,160, 24, 60,14, ID_EDIT_BUDGET,    L"EDIT",    L"0");
+
+    add(SS_LEFT,              8, 44,120,10, 0,                 L"STATIC",  L"Number of Days:");
+    add(WS_BORDER|ES_NUMBER,130, 42, 60,14, ID_EDIT_DAYS,      L"EDIT",    L"1");
+
+    add(SS_LEFT,              8, 62,120,10, 0,                 L"STATIC",  L"Province:");
+    add(CBS_DROPDOWNLIST|WS_VSCROLL,
+                            130, 60,140,140,ID_COMBO_PROVINCE, L"COMBOBOX",L"");
+
+    add(SS_LEFT,              8, 82,120,10, 0,                 L"STATIC",  L"Trip Style:");
+    add(CBS_DROPDOWNLIST|WS_VSCROLL,
+                            130, 80,140,120,ID_COMBO_STYLE,    L"COMBOBOX",L"");
+
+    add(BS_PUSHBUTTON,      130,100, 80,16, ID_BTN_SEARCH,     L"BUTTON",  L"Search");
+
+    add(SS_LEFT,              8,122,380,10, 0,                 L"STATIC",  L"Results:");
+    add(WS_BORDER|WS_VSCROLL|LBS_NOTIFY|LBS_NOINTEGRALHEIGHT,
+                              8,134,384,196,ID_LIST_RESULT,    L"LISTBOX", L"");
+
+    add(BS_PUSHBUTTON,      330,338, 60,16, ID_BTN_CLOSE_PLAN, L"BUTTON",  L"Close");
+
+    ((DLGTEMPLATE*)b.buf)->cdit = n;
+    DialogBoxIndirectParamA(g_hInst,(DLGTEMPLATE*)b.buf,hParent,PlanTripDlgProc,0);
+}
+
+// ─── What to Eat Dialog ───
+static void ShowWhatToEatDialog(HWND hParent) {
+    DlgBuilder b;
+    DLGTEMPLATE* dt = (DLGTEMPLATE*)b.buf;
+    dt->style = DS_SETFONT|DS_MODALFRAME|DS_CENTER|WS_POPUP|WS_CAPTION|WS_SYSMENU;
+    dt->dwExtendedStyle = 0;
+    dt->cdit = 0;
+    dt->x=0; dt->y=0; dt->cx=320; dt->cy=300;
+    b.pos = sizeof(DLGTEMPLATE);
+    b.addW(0); b.addW(0);
+    b.addWStr(L"What to Eat Today?");
+    b.addW(9); b.addWStr(L"Segoe UI");
+
+    short n = 0;
+    auto add = [&](DWORD st,short x,short y,short w,short h,
+                   WORD id,const wchar_t* cls,const wchar_t* txt){
+        b.addCtrl(st,x,y,w,h,id,cls,txt); n++;
+    };
+
+    add(SS_LEFT,              8,  8,160,10, 0,                  L"STATIC",  L"Number of People:");
+    add(WS_BORDER|ES_NUMBER,170,  6, 60,14, ID_EDIT_CUSTOMER,   L"EDIT",    L"1");
+
+    add(SS_LEFT,              8, 26,160,10, 0,                  L"STATIC",  L"Dish Type:");
+    add(CBS_DROPDOWNLIST|WS_VSCROLL,
+                            170, 24,120, 80, ID_COMBO_CATEGORY, L"COMBOBOX",L"");
+
+    add(BS_PUSHBUTTON,      170, 44, 120,16, ID_BTN_EAT_GO,     L"BUTTON",  L"Get Recommendation");
+
+    add(SS_LEFT,              8, 66,300,10, 0,                  L"STATIC",  L"Results:");
+    add(WS_BORDER|WS_VSCROLL|LBS_NOTIFY|LBS_NOINTEGRALHEIGHT,
+                              8, 78,304,196,ID_LIST_EAT_RESULT, L"LISTBOX", L"");
+
+    add(BS_PUSHBUTTON,      254,280, 60,14, ID_BTN_CLOSE_EAT,   L"BUTTON",  L"Close");
+
+    ((DLGTEMPLATE*)b.buf)->cdit = n;
+    DialogBoxIndirectParamA(g_hInst,(DLGTEMPLATE*)b.buf,hParent,WhatToEatDlgProc,0);
+}
+
+// ─────────────────────────────────────────
+//  Main Window Proc
+// ─────────────────────────────────────────
+LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    switch (msg) {
+    case WM_CREATE: {
+        CreateWindowA("STATIC", "Smart Trip Assistant",
+            WS_CHILD|WS_VISIBLE|SS_CENTER,
+            0, 30, 400, 30, hWnd, NULL, g_hInst, NULL);
+
+        CreateWindowA("STATIC", "Plan your journey through Northern Thailand",
+            WS_CHILD|WS_VISIBLE|SS_CENTER,
+            0, 65, 400, 16, hWnd, NULL, g_hInst, NULL);
+
+        CreateWindowA("BUTTON", "[ 1 ]  Plan Trip",
+            WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,
+            100, 110, 200, 40, hWnd, (HMENU)ID_BTN_PLAN_TRIP, g_hInst, NULL);
+
+        CreateWindowA("BUTTON", "[ 2 ]  What to Eat Today?",
+            WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,
+            100, 165, 200, 40, hWnd, (HMENU)ID_BTN_WHAT_TO_EAT, g_hInst, NULL);
+
+        CreateWindowA("BUTTON", "[ 3 ]  Exit",
+            WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,
+            100, 220, 200, 40, hWnd, (HMENU)ID_BTN_EXIT, g_hInst, NULL);
+        return 0;
+    }
+    case WM_COMMAND:
+        switch (LOWORD(wParam)) {
+        case ID_BTN_PLAN_TRIP:    ShowPlanTripDialog(hWnd);  break;
+        case ID_BTN_WHAT_TO_EAT: ShowWhatToEatDialog(hWnd); break;
+        case ID_BTN_EXIT:        DestroyWindow(hWnd);        break;
+        }
+        return 0;
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
+    }
+    return DefWindowProcA(hWnd, msg, wParam, lParam);
+}
+
+// ─────────────────────────────────────────
+//  WinMain
+// ─────────────────────────────────────────
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow) {
+    g_hInst = hInstance;
+    InitCommonControls();
+
+    WNDCLASSEXA wc = {};
+    wc.cbSize        = sizeof(wc);
+    wc.style         = CS_HREDRAW | CS_VREDRAW;
+    wc.lpfnWndProc   = MainWndProc;
+    wc.hInstance     = hInstance;
+    wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1);
+    wc.lpszClassName = "SmartTripMainWnd";
+    wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
+    RegisterClassExA(&wc);
+
+    int sw = GetSystemMetrics(SM_CXSCREEN);
+    int sh = GetSystemMetrics(SM_CYSCREEN);
+    int ww = 400, wh = 310;
+
+    g_hMain = CreateWindowExA(0, "SmartTripMainWnd", "Smart Trip Assistant",
+        WS_OVERLAPPED|WS_CAPTION|WS_SYSMENU|WS_MINIMIZEBOX,
+        (sw-ww)/2, (sh-wh)/2, ww, wh,
+        NULL, NULL, hInstance, NULL);
+
+    ShowWindow(g_hMain, nCmdShow);
+    UpdateWindow(g_hMain);
+
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    return (int)msg.wParam;
+}

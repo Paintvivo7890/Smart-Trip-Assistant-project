@@ -179,6 +179,8 @@ TravelPreference getUserInput_1(){
 // Enter 2 Feature food
 Restaurant getUserInput_2(){
     Restaurant rest;
+    vector<Restaurant> foods;
+
     int ctm, ctgr, btf, ml;
 
     cout << endl;
@@ -210,10 +212,25 @@ Restaurant getUserInput_2(){
 
             if(ctgr == 3){
                 cout << BOLD BRIGHT_MAGENTA ">> Random!" RESET << endl;
+
+                int randomIndex = rand() % allRestaurants.size();
+
+                foods.push_back(allRestaurants[randomIndex]);
+
+                cout << BRIGHT_GREEN
+                     << "Added : " << allRestaurants[randomIndex].name
+                     << RESET << endl;
+
                 break;
             }
         }
     }
+
+    line();
+    cout << BOLD BRIGHT_YELLOW "=========== RESTAURANT SUMMARY ===========" RESET << endl;
+
+    Show_Restaurant_Summary(foods);
+
     return rest;
 }
 
