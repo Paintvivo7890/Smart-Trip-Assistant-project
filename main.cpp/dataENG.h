@@ -6,7 +6,7 @@
 using namespace std;
 
 struct Place {
-    string Province;
+    string province;
     string district;
     string type;
     string name;
@@ -25,7 +25,8 @@ struct Person {
     vector<Meal> mealList;
 };
 
-struct Restaurant {
+struct restaurant {
+    string province;
     string district;
     string type;
     string name;
@@ -37,5 +38,6 @@ struct Restaurant {
 
     int price;
 };
-extern vector<Restaurant> allRestaurant;
+extern vector<restaurant> allrestaurant;
 #endif
+
