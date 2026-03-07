@@ -1,0 +1,68 @@
+======================================================
+        SMART PLAN TRIP ASSISTANT                     
+        [ RESTAURANT RECEIPT ]                        
+======================================================
+  Date & Time     : 2026-03-08 01:04:52
+------------------------------------------------------
+  Province        : Mae Hong Son
+  Total diners    : 2 person(s)
+------------------------------------------------------
+  ORDER DETAIL :
+  Person [1] :
+    Meal 1 : Rice
+  Person [2] :
+    Meal 1 : Rice
+------------------------------------------------------
+  RESTAURANTS SELECTED :
+  No. Restaurant Name               District            Type        Price (THB)
+------------------------------------------------------
+  1.  Bua Tong Field Pork Leg Rice  Khun Yuam           Rice        60
+  2.  Khun Yuam Duck Rice           Khun Yuam           Rice        70
+  3.  Khun Yuam Duck Rice           Khun Yuam           Rice        70
+  4.  Khun Yuam Local Kitchen       Khun Yuam           Rice        55
+------------------------------------------------------
+  Total restaurants   : 4
+  Total price         : 255 THB
+  Price per person    : 127.50 THB
+======================================================
+
+======================================================
+        SMART PLAN TRIP ASSISTANT                     
+        [ RESTAURANT RECEIPT ]                        
+======================================================
+  Date & Time     : 2026-03-08 01:28:30
+------------------------------------------------------
+  Province        : Chiang Mai
+  Total diners    : 1 person(s)
+------------------------------------------------------
+  ORDER DETAIL :
+  Person [1] :
+    Meal 1 : Rice
+    Meal 2 : Rice
+------------------------------------------------------
+  RESTAURANTS SELECTED :
+  (No restaurants selected)
+======================================================
+
+======================================================
+        SMART PLAN TRIP ASSISTANT                     
+        [ RESTAURANT RECEIPT ]                        
+======================================================
+  Date & Time     : 2026-03-08 02:26:07
+------------------------------------------------------
+  Province        : Chiang Mai
+  Total diners    : 2 person(s)
+------------------------------------------------------
+  ORDER DETAIL :
+  Person [1] :
+    Meal 1 : Rice
+    Meal 2 : Rice
+  Person [2] :
+    Meal 1 : Noodles
+------------------------------------------------------
+
+RESTAURANTS SELECTED
+----------------------------------------------------------------------
+No restaurants selected
+======================================================
+
