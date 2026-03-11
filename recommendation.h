@@ -36,8 +36,7 @@ vector<restaurant> Recommendation_res(vector<restaurant> &, int );
 void Show_restaurant(vector<restaurant> &);
 
 //เลือกร้านจากที่โช
-vector<restaurant> selectresrestaurant(vector<restaurant> &);
-
+vector<restaurant> selectRestaurant(vector<restaurant> &P);
 //โชว่าร้านนี้เลือกไปกี่ครั้ง
 void Show_restaurantsellect(vector<restaurant> &);
 

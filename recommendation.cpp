@@ -190,12 +190,29 @@ vector<restaurant> Recommendation_res(vector<restaurant> &pac, int ts) {
     if (ts == 1) TS = "Noodle";
     else if (ts == 2) TS = "Rice";
 
-    for (int i = 0; i < pac.size(); i++) {
-        if (pac[i].type == TS) {
-            restaurant_accordingto_condition.push_back(pac[i]);
+    if(ts == 3){
+        vector<restaurant> result;
+        srand(time(0));
+        do{
+        int r = rand() % pac.size();
+        result.push_back(pac[r]);
+        for(int i = 0; i < result.size() - 1; i++){
+            if(result[i].name == result[result.size() - 1].name){
+                result.pop_back();
+                break;
+            }
         }
+        }
+        while(result.size() < 5);
+        return result;
+    }
+        
+    for(int i = 0; i < pac.size(); i++){
+        if(pac[i].type == TS)
+            restaurant_accordingto_condition.push_back(pac[i]);
     }
     return restaurant_accordingto_condition;
+
 }
 
 void Show_restaurant(vector<restaurant> &P){
@@ -237,22 +254,25 @@ void Show_restaurant(vector<restaurant> &P){
          << RESET << endl;
 }
 
-vector<restaurant> selectresrestaurant(vector<restaurant> &P){
+vector<restaurant> selectRestaurant(vector<restaurant> &P){
     vector<restaurant> select;
     int noForselect;
+    cout << BOLD BRIGHT_CYAN "Select by number (0 to finish) : " RESET;
     do{
-        cout << "Enter the number of the restaurant you want to select (0 to finish): ";
-    cin >> noForselect;
-    if (noForselect > 0 && noForselect <= P.size()) {
-        select.push_back(P[noForselect - 1]);
-         cout << "Added: " << P[noForselect - 1].name << endl;
-    } 
-    else if (noForselect != 0 ) {
-        cout << "Invalid Selection!" << endl;
-    }
+        cin >> noForselect;
+        if(noForselect > 0 && noForselect <= (int)P.size()){
+            select.push_back(P[noForselect - 1]);
+            cout << BRIGHT_GREEN "Added : " RESET << P[noForselect-1].name << "\n";
+            cout << BOLD BRIGHT_CYAN "Select by number (0 to finish) : " RESET;
+        } else if(noForselect != 0){
+            cout << BOLD BRIGHT_RED "[!] Invalid selection!\n" RESET;
+        }
     } while(noForselect != 0);
     return select;
 }
+
+
+
 
 vector<Place> selectPlace(vector<Place> &P){
     vector<Place> select;

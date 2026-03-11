@@ -91,7 +91,7 @@ TravelPreference getUserInput_1(){
     
     int day = 1;
     int place,type_trip,people,budget;
-    char again = 'n';
+    string yn;
 
     line();
     cout << BOLD BG_CYAN "   ===>>> Smart Trip Assistant <<<===   " RESET << endl;
@@ -148,8 +148,23 @@ TravelPreference getUserInput_1(){
 
     showTripSummary(allSelectedPlaces, foods, pref);
 
+    
     // ===== บันทึกลงไฟล์ =====
     saveTripReceipt(pref, allSelectedPlaces);
+
+   line();
+    do{
+        cout<<BOLD BRIGHT_GREEN"View My Trip History (y/n) :"<<RESET;
+        cin>> yn;
+
+        if(yn == "y" ||yn == "Y"){
+            viewSavedFile("trip_plan.txt");
+            break;
+        }
+
+    }while(yn != "y" && yn != "n");
+    
+    
 
     return pref;
 }
@@ -162,6 +177,7 @@ restaurant getUserInput_2(){
 
     restaurant rest;
     int ctm , ctgr ,btf , ml;
+    string yn;
     
 
     cout << BOLD BRIGHT_YELLOW "========== [ Restaurant ] ==========" RESET << endl;
@@ -207,13 +223,10 @@ restaurant getUserInput_2(){
                 BRIGHT_CYAN "3. Surprise me\n" RESET
                 BOLD CYAN "Enter your choice (1-3): " RESET 
             );
-            if(m.category == 3){
-                cout<< BOLD BRIGHT_MAGENTA "Random" RESET <<endl;
-                m.category = rand()%2+1; //random 1-2
-            }
+    
             vector<restaurant> recomRES =Recommendation_res(FR, m.category);
             Show_restaurant(recomRES);
-            vector<restaurant> selectedRestaurants = selectresrestaurant(recomRES);
+            vector<restaurant> selectedRestaurants = selectRestaurant(recomRES);
             Show_restaurantsellect(selectedRestaurants);
 
             for(auto &r : selectedRestaurants){
@@ -228,6 +241,18 @@ restaurant getUserInput_2(){
 
     // ===== บันทึกลงไฟล์ =====
     saveRestaurantReceipt(rest, foods);
+
+    line();
+    do{
+        cout<<BOLD BRIGHT_GREEN"View My Restaurant History (y/n) :"<<RESET;
+        cin>> yn;
+
+        if(yn == "y" ||yn == "Y"){
+            viewSavedFile("restaurant_receipt.txt");
+            break;
+        }
+
+    }while(yn != "y" && yn != "n");
 
     return rest;
 }
@@ -319,8 +344,8 @@ void show_style(){
          << BOLD BRIGHT_RED    << setw(25) << "[ 2 ] Adventure"  << RESET << endl
          << BOLD BRIGHT_GREEN  << setw(25) << "[ 3 ] Natural"
          << BOLD BRIGHT_YELLOW << setw(25) << "[ 4 ] Photo"      << RESET << endl
-         << BOLD BRIGHT_CYAN   << setw(25) << "[ 5 ] Cafe"
-         << BOLD BRIGHT_MAGENTA<< setw(25) << "[ 6 ] Random"     << RESET << endl;
+         << BOLD BRIGHT_CYAN   << setw(25) << "[ 5 ] Cafe"      << RESET << endl;
+        //  << BOLD BRIGHT_MAGENTA<< setw(25) << "[ 6 ] Random"    
 }
 
 //summary
@@ -352,7 +377,7 @@ void show_pv(){
          << BRIGHT_YELLOW << setw(20) << "[17] Uthai Thani" << RESET << endl;
 }
 
-//
+
 int getValid_Integer_for_budget(const string &prompt){
     int value;
 
@@ -373,83 +398,70 @@ int getValid_Integer_for_budget(const string &prompt){
 
 map<int, vector<string>> districts = {
 
-    {1, {"Mueang Chiang Mai","Chom Thong","Mae Chaem","Chiang Dao",
-         "Doi Saket","Mae Taeng","Mae Rim","Samoeng",
-         "Fang","Mae Ai","Phrao","San Pa Tong",
-         "San Kamphaeng","San Sai","Hang Dong",
-         "Hot","Doi Tao","Omkoi","Saraphi",
-         "Wiang Haeng","Chai Prakan","Mae Wang",
-         "Mae On","Doi Lo"}},
+    {1, {"Mueang Chiang Mai","Chom Thong","Mae Rim","Hang Dong",
+         "Chiang Dao","Mae Taeng","Samoeng"}},
 
-    {2, {"Mueang Chiang Rai","Wiang Chai","Chiang Khong","Thoeng",
-        "Phan","Pa Daet","Mae Chan","Chiang Saen",
-        "Mae Sai","Mae Suai","Wiang Pa Pao",
-        "Phaya Mengrai","Wiang Kaen","Khun Tan",
-        "Mae Fah Luang","Mae Lao","Wiang Chiang Rung","Doi Luang"}},
+    {2, {"Mueang Chiang Rai","Mae Suai","Mae Sai","Thoeng",
+        "Wiang Kaen","Mae Fa Luang","Chiang Saen",
+        "Mae Chan"}},
 
-    {3, {"Mueang Mae Hong Son","Khun Yuam","Pai","Mae Sariang",
-        "Mae La Noi","Sop Moei","Pang Mapha"}},
+    {3, {"Mueang Mae Hong Son","Khun Yuam","Pang Mapha","Pai"}},
 
-    {4, {"Mueang Lamphun","Mae Tha","Ban Hong","Li",
-        "Thung Hua Chang","Pa Sang","Ban Thi","Wiang Nong Long"}},
+    {4, {"Mueang Lamphun","Li","Thung Hua Chang","Mae Tha","Pa Sang"}},
 
-    {5, {"Mueang Lampang","Mae Mo","Ko Kha","Soem Ngam",
-        "Ngao","Chae Hom","Wang Nuea","Thoen",
-        "Mae Phrik","Mae Tha","Sop Prap","Hang Chat",
-        "Mueang Pan"}},
+    {5, {"Mueang Lampang","Ko Kha","Mae Tha",
+        "Chae Hom","Mueang Pan","Ngao",
+        "Mae Mo","Hang Chat"}},
+    {6, {"Mueang Phayao","Chiang Kham","Pong","Phu Sang","Chiang Muan","Mae Chai"}},
 
-    {6, {"Mueang Phayao","Chun","Chiang Kham","Chiang Muan",
-        "Dok Khamtai","Pong","Mae Chai","Phu Sang","Phu Kamyao"}},
+    {7, {"Mueang Phrae","Den Chai","Rong Kwang","Long",
+        "Wang Chin","Song"}},
 
-    {7, {"Mueang Phrae","Rong Kwang","Long","Sung Men",
-        "Den Chai","Song","Wang Chin","Nong Muang Khai"}},
+    {8, {"Mueang Nan", "Phu Phiang", "Pua", "Tha Wang Pha", "Na Noi", "Bo Kluea", "Chiang Klang"}},
 
-    {8, {"Mueang Nan","Mae Charim","Ban Luang","Na Noi",
-        "Pua","Tha Wang Pha","Wiang Sa","Thung Chang",
-        "Chiang Klang","Na Muen","Santisuk","Bo Kluea",
-        "Song Khwae","Phu Phiang","Chaloem Phra Kiat"}},
+    {9, {"Mueang Uttaradit", "Nam Pat", "Lablae", "Tha Pla", "Phichai"}},
 
-    {9, {"Mueang Uttaradit","Tron","Tha Pla","Nam Pat",
-        "Phichai","Laplae","Thong Saen Khan",
-        "Fak Tha","Ban Khok"}},
+    {10, {"Mueang Tak", "Umphang", "Tha Song Yang", "Phop Phra", "Mae Ramat",
+         "Mae Sot", "Ban Tak", "Sam Ngao"}},
 
-    {10, {"Mueang Tak","Ban Tak","Sam Ngao","Mae Ramat",
-        "Tha Song Yang","Mae Sot","Phop Phra",
-        "Umphang","Wang Chao"}},
+    {11, {"Mueang Sukhothai", "Khiri Mat", "Si Satchanalai", "Sawankhalok",
+         "Thung Saliam", "Ban Dan Lan Hoi", "Si Samrong"}},
 
-    {11, {"Mueang Sukhothai","Ban Dan Lan Hoi","Khiri Mat",
-        "Kong Krailat","Si Satchanalai","Si Samrong",
-        "Sawankhalok","Si Nakhon","Thung Saliam"}},
+    {12, {"Mueang Phitsanulok", "Nakhon Thai", "Wang Thong",
+         "Noen Maprang", "Chat Trakan", "Wat Bot"}},
 
-    {12, {"Mueang Phitsanulok","Nakhon Thai","Chat Trakan",
-        "Bang Rakam","Bang Krathum","Phrom Phiram",
-        "Wat Bot","Wang Thong","Noen Maprang"}},
+    {13, {"Mueang Kamphaeng Phet", "Pang Sila Thong",
+         "Khlong Lan", "Kosamphi Nakhon", "Phran Kratai"}},
 
-    {13, {"Mueang Kamphaeng Phet","Sai Ngam","Khlong Lan",
-        "Khanu Woralaksaburi","Khlong Khlung",
-        "Phran Kratai","Lan Krabue","Sai Thong Watthana",
-        "Pang Sila Thong","Bueng Samakkhi","Kosamphi Nakhon"}},
+    {14, {"Mueang Phetchabun", "Si Thep", "Khao Kho",
+         "Lom Kao", "Lom Sak", "Nam Nao", "Wang Pong"}},
 
-    {14, {"Mueang Phetchabun","Chon Daen","Lom Sak",
-        "Lom Kao","Wichian Buri","Si Thep",
-        "Nong Phai","Bueng Sam Phan",
-        "Nam Nao","Wang Pong","Khao Kho"}},
+    {15, {"Mueang Phichit", "Pho Prathap Chang", "Sam Ngam",
+         "Thap Khlo", "Bang Mun Nak", "Pho Thale"}},
 
-    {15, {"Mueang Phichit","Wang Sai Phun","Pho Prathap Chang",
-        "Taphan Hin","Bang Mun Nak","Dong Charoen",
-        "Thap Khlo","Sak Lek","Bueng Na Rang",
-        "Dong Charoen","Wachirabarami"}},
+    {16, {"Mueang Nakhon Sawan", "Takhli", "Banphot Phisai", "Tha Tako", "Chum Saeng",
+         "Mae Poen", "Chum Ta Bong", "Tak Fa", "Kao Liao", "Phayuha Khiri"}},
 
-    {16, {"Mueang Nakhon Sawan","Krok Phra","Chum Saeng",
-        "Nong Bua","Banphot Phisai","Kao Liao",
-        "Takhli","Takhli","Phaisali","Phayuha Khiri",
-        "Lat Yao","Mae Wong","Mae Poen","Chum Ta Bong"}},
-
-    {17, {"Mueang Uthai Thani","Thap Than","Sawang Arom",
-        "Nong Chang","Nong Khayang","Ban Rai",
-        "Lan Sak","Huai Khot"}}
+    {17, {"Mueang Uthai Thani", "Lan Sak", "Ban Rai"}},
 
 };
+
+// void show_district(int pv){
+//     cout<<"<<<=======district=======>>>"<<endl;
+//     line();
+//     vector<string> dis = districts[pv];
+
+//     for(int i = 0; i < dis.size(); i++){
+//         string text = "[" + to_string(i+1) + "] " + dis[i];
+//         cout << left << setw(25) << text;
+//         if((i+1)%4==0)
+//         cout<<endl;
+//         if(i == dis.size() - 1 && dis.size() % 4 != 0){
+//             cout << endl;
+//         }
+//     }
+
+// }
 
 void show_district(int pv){
 

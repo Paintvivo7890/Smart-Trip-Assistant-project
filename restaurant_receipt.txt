@@ -2,35 +2,7 @@
         SMART PLAN TRIP ASSISTANT                     
         [ RESTAURANT RECEIPT ]                        
 ======================================================
-  Date & Time     : 2026-03-08 01:04:52
-------------------------------------------------------
-  Province        : Mae Hong Son
-  Total diners    : 2 person(s)
-------------------------------------------------------
-  ORDER DETAIL :
-  Person [1] :
-    Meal 1 : Rice
-  Person [2] :
-    Meal 1 : Rice
-------------------------------------------------------
-  RESTAURANTS SELECTED :
-  No. Restaurant Name               District            Type        Price (THB)
-------------------------------------------------------
-  1.  Bua Tong Field Pork Leg Rice  Khun Yuam           Rice        60
-  2.  Khun Yuam Duck Rice           Khun Yuam           Rice        70
-  3.  Khun Yuam Duck Rice           Khun Yuam           Rice        70
-  4.  Khun Yuam Local Kitchen       Khun Yuam           Rice        55
-------------------------------------------------------
-  Total restaurants   : 4
-  Total price         : 255 THB
-  Price per person    : 127.50 THB
-======================================================
-
-======================================================
-        SMART PLAN TRIP ASSISTANT                     
-        [ RESTAURANT RECEIPT ]                        
-======================================================
-  Date & Time     : 2026-03-08 01:28:30
+  Date & Time     : 2026-03-10 13:15:26
 ------------------------------------------------------
   Province        : Chiang Mai
   Total diners    : 1 person(s)
@@ -38,17 +10,29 @@
   ORDER DETAIL :
   Person [1] :
     Meal 1 : Rice
-    Meal 2 : Rice
 ------------------------------------------------------
-  RESTAURANTS SELECTED :
-  (No restaurants selected)
+
+RESTAURANTS SELECTED
+----------------------------------------------------------------------
+No   Restaurant                  District          Type        Price     
+----------------------------------------------------------------------
+1    Chang Phueak Pork Leg Rice  Mueang Chiang Mai Rice        60        
+2    Kai Kiat O Cha Chicken Rice Mueang Chiang Mai Rice        60        
+3    Uncle Thai Curry Rice       Mueang Chiang Mai Rice        45        
+4    Si Mongkhon Red Pork Rice   Mueang Chiang Mai Rice        50        
+5    Por Prateep Crab Fried Rice Mueang Chiang Mai Rice        80        
+----------------------------------------------------------------------
+
+Total restaurants : 5
+Total price       : 295 THB
+Price per person  : 295.00 THB
 ======================================================
 
 ======================================================
         SMART PLAN TRIP ASSISTANT                     
         [ RESTAURANT RECEIPT ]                        
 ======================================================
-  Date & Time     : 2026-03-08 02:26:07
+  Date & Time     : 2026-03-10 13:26:31
 ------------------------------------------------------
   Province        : Chiang Mai
   Total diners    : 2 person(s)
@@ -56,13 +40,104 @@
   ORDER DETAIL :
   Person [1] :
     Meal 1 : Rice
-    Meal 2 : Rice
   Person [2] :
-    Meal 1 : Noodles
+    Meal 1 : Rice
 ------------------------------------------------------
 
 RESTAURANTS SELECTED
 ----------------------------------------------------------------------
-No restaurants selected
+No   Restaurant                  District          Type        Price     
+----------------------------------------------------------------------
+1    Chang Phueak Pork Leg Rice  Mueang Chiang Mai Rice        60        
+2    Kai Kiat O Cha Chicken Rice Mueang Chiang Mai Rice        60        
+3    Chang Phueak Pork Leg Rice  Mueang Chiang Mai Rice        60        
+----------------------------------------------------------------------
+
+Total restaurants : 3
+Total price       : 180 THB
+Price per person  : 90.00 THB
+======================================================
+
+======================================================
+        SMART PLAN TRIP ASSISTANT                     
+        [ RESTAURANT RECEIPT ]                        
+======================================================
+  Date & Time     : 2026-03-10 13:51:22
+------------------------------------------------------
+  Province        : Phayao
+  Total diners    : 1 person(s)
+------------------------------------------------------
+  ORDER DETAIL :
+  Person [1] :
+    Meal 1 : Surprise me (Random)
+------------------------------------------------------
+
+RESTAURANTS SELECTED
+----------------------------------------------------------------------
+No   Restaurant                  District          Type        Price     
+----------------------------------------------------------------------
+1    Saeng Phian Khao Soi        Mueang Phayao     Noodle      50        
+----------------------------------------------------------------------
+
+Total restaurants : 1
+Total price       : 50 THB
+Price per person  : 50.00 THB
+======================================================
+
+======================================================
+        SMART PLAN TRIP ASSISTANT                     
+        [ RESTAURANT RECEIPT ]                        
+======================================================
+  Date & Time     : 2026-03-10 14:10:18
+------------------------------------------------------
+  Province        : Chiang Mai
+  Total diners    : 1 person(s)
+------------------------------------------------------
+  ORDER DETAIL :
+  Person [1] :
+    Meal 1 : Surprise me (Random)
+------------------------------------------------------
+
+RESTAURANTS SELECTED
+----------------------------------------------------------------------
+No   Restaurant                  District          Type        Price     
+----------------------------------------------------------------------
+1    Tha Nam Beef Noodle         Mueang Chiang Mai Noodle      80        
+2    Por Prateep Crab Fried Rice Mueang Chiang Mai Rice        80        
+----------------------------------------------------------------------
+
+Total restaurants : 2
+Total price       : 160 THB
+Price per person  : 160.00 THB
+======================================================
+
+======================================================
+        SMART PLAN TRIP ASSISTANT                     
+        [ RESTAURANT RECEIPT ]                        
+======================================================
+  Date & Time     : 2026-03-10 15:18:51
+------------------------------------------------------
+  Province        : Chiang Mai
+  Total diners    : 2 person(s)
+------------------------------------------------------
+  ORDER DETAIL :
+  Person [1] :
+    Meal 1 : Surprise me (Random)
+  Person [2] :
+    Meal 1 : Rice
+------------------------------------------------------
+
+RESTAURANTS SELECTED
+----------------------------------------------------------------------
+No   Restaurant                  District          Type        Price     
+----------------------------------------------------------------------
+1    Mae Sai Khao Soi            Mueang Chiang Mai Noodle      50        
+2    Anchan Noodle               Mueang Chiang Mai Noodle      60        
+3    Chang Phueak Pork Leg Rice  Mueang Chiang Mai Rice        60        
+----------------------------------------------------------------------
+
+Total restaurants : 3
+Total price       : 170 THB
+Price per person  : 85.00 THB
 ======================================================
 
